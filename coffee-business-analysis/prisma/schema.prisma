@@ -8,7 +8,79 @@ datasource db {
 }
 
 model Customer {
-  id    String @id @default(cuid())
-  name  String
-  email String @unique
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  phone         String?
+  address       String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  totalSpent    Float    @default(0)
+  visitCount    Int      @default(0)
+  lastVisit     DateTime?
+  loyaltyPoints Int      @default(0)
+  orders        Order[]
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  description String?
+  category    String
+  price       Float
+  cost        Float
+  stock       Int         @default(0)
+  imageUrl    String?
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[]
+}
+
+model Order {
+  id         String      @id @default(cuid())
+  customerId String
+  customer   Customer    @relation(fields: [customerId], references: [id])
+  orderDate  DateTime    @default(now())
+  total      Float
+  status     String      @default("completed")
+  paymentMethod String
+  items      OrderItem[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+  createdAt DateTime @default(now())
+}
+
+model MarketResearch {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  description String
+  findings    String
+  date        DateTime @default(now())
+  source      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model FinancialMetric {
+  id        String   @id @default(cuid())
+  date      DateTime
+  revenue   Float
+  expenses  Float
+  profit    Float
+  category  String
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
