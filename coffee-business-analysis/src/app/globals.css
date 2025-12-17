@@ -1,0 +1,305 @@
+/**
+ * GLOBAL STYLES
+ */
+
+/* Import Tailwind's base styles, components, and utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+  CUSTOM ANIMATIONS
+  
+  These create smooth, professional entrance animations
+  that don't feel like typical AI-generated effects
+*/
+
+@layer utilities {
+  
+  /* FADE IN - Simple opacity fade */
+  /* Used for: Badges, subtle elements */
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  /* SLIDE UP - Element slides up while fading in */
+  /* Used for: Main headings, important content */
+  .animate-slide-up {
+    animation: slideUp 0.7s ease-out forwards;
+    opacity: 0; /* Start hidden */
+  }
+
+  /* SLIDE UP with delays - Creates staggered effect */
+  /* Used for: Sequential content (heading → subheading → CTA) */
+  .animate-slide-up-delay-1 {
+    animation: slideUp 0.7s ease-out 0.1s forwards;
+    opacity: 0;
+  }
+
+  .animate-slide-up-delay-2 {
+    animation: slideUp 0.7s ease-out 0.2s forwards;
+    opacity: 0;
+  }
+
+  .animate-slide-up-delay-3 {
+    animation: slideUp 0.7s ease-out 0.3s forwards;
+    opacity: 0;
+  }
+
+  /* FADE IN UP - Combines fade with subtle upward movement */
+  /* Used for: Feature cards, stat numbers */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+  }
+
+  /* SCALE IN - Element scales from 95% to 100% */
+  /* Used for: Cards that need attention */
+  .animate-scale-in {
+    animation: scaleIn 0.5s ease-out forwards;
+  }
+
+}
+
+/* 
+  KEYFRAME DEFINITIONS
+  
+  These define the actual animation movements
+  Values are carefully chosen for smooth, natural motion
+*/
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px); /* Starts 30px below */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); /* Ends at natural position */
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px); /* Smaller movement than slideUp */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95); /* Starts slightly smaller */
+  }
+  to {
+    opacity: 1;
+    transform: scale(1); /* Ends at normal size */
+  }
+}
+
+/* 
+  BASE LAYER CUSTOMIZATIONS
+  
+  Override default browser styles for consistency
+*/
+
+@layer base {
+  
+  /* 
+    SMOOTH SCROLLING
+    
+    Creates smooth scroll behavior when clicking anchor links
+    e.g., when clicking "Learn More" to scroll to #features
+  */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /*
+    BODY STYLES
+    
+    Set default font and ensure full height
+    antialiased = smoother font rendering on Mac/Chrome
+  */
+  body {
+    @apply font-sans antialiased;
+  }
+
+  /*
+    FOCUS STYLES
+    
+    Remove default outline and add custom focus ring
+    This improves keyboard navigation accessibility
+  */
+  *:focus {
+    @apply outline-none;
+  }
+
+  *:focus-visible {
+    @apply ring-2 ring-amber-500 ring-offset-2;
+  }
+
+  /*
+    HEADING STYLES
+    
+    Consistent typography hierarchy
+    Makes h1-h6 look good without extra classes
+  */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+
+  h1 {
+    @apply text-4xl sm:text-5xl;
+  }
+
+  h2 {
+    @apply text-3xl sm:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl sm:text-3xl;
+  }
+
+  /*
+    LINK STYLES
+    
+    Default link appearance
+    Smooth color transition on hover
+  */
+  a {
+    @apply transition-colors duration-200;
+  }
+
+}
+
+/* 
+  CUSTOM SCROLLBAR
+  
+  Styled scrollbar that matches the coffee theme
+  Only works in WebKit browsers (Chrome, Safari, Edge)
+*/
+
+/* Scrollbar track (background) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Scrollbar track color */
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+/* Scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  @apply bg-amber-300 rounded-full;
+}
+
+/* Scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-amber-400;
+}
+
+/* 
+  REDUCED MOTION
+  
+  Accessibility: Disable animations for users who prefer reduced motion
+  This respects the user's system preferences
+  
+  When to use: Always include this for accessibility
+*/
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 
+  LOADING STATES
+  
+  Skeleton loaders and loading indicators
+  Used when data is being fetched
+*/
+
+.skeleton {
+  @apply bg-gray-200 animate-pulse rounded;
+}
+
+/* 
+  GRADIENT TEXT
+  
+  Utility for colorful gradient text
+  Already used in the home page heading
+*/
+
+.gradient-text {
+  @apply bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent;
+}
+
+/* 
+  GLASS MORPHISM EFFECT
+  
+  Modern frosted glass look
+  Useful for cards, modals, navigation bars
+*/
+
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 
+  CUSTOM SHADOWS
+  
+  More dramatic shadows for depth
+*/
+
+.shadow-smooth {
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+}
+
+.shadow-strong {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* 
+  HOVER GLOW EFFECT
+  
+  Subtle glow on interactive elements
+  Adds polish to buttons and cards
+*/
+
+.hover-glow {
+  transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(217, 119, 6, 0.3);
+}
