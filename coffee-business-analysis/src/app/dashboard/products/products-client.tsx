@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { formatCurrency } from '@/lib/utils'
 import { Package, AlertTriangle, DollarSign, Coffee, ShoppingBag, Plus, Edit, Trash2 } from 'lucide-react'
 import { ProductModal } from '@/components/modals/product-modal'
+import toast from 'react-hot-toast'
 
 interface Product {
   id: string
@@ -36,70 +37,73 @@ export default function ProductsPageClient({ initialProducts, stats }: ProductsP
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(false)
 
-  // Handle create/update
   const handleSave = async (productData: any) => {
-  setLoading(true)
-  
-  try {
-    const isEditing = !!productData.id
-    const method = isEditing ? 'PUT' : 'POST'
+    setLoading(true)
     
-    const response = await fetch('/api/products', {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(productData)
-    })
+    const loadingToast = toast.loading(productData.id ? 'Updating product...' : 'Adding product...')
+    
+    try {
+      const isEditing = !!productData.id
+      const method = isEditing ? 'PUT' : 'POST'
+      
+      const response = await fetch('/api/products', {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(productData)
+      })
 
-    if (!response.ok) throw new Error('Failed to save product')
+      if (!response.ok) throw new Error('Failed to save product')
 
-    alert(isEditing ? 'Product updated successfully!' : 'Product added successfully!')
-    
-    // Reload the page to refresh all data including stats
-    window.location.reload()
-    
-  } catch (error) {
-    console.error('Error saving product:', error)
-    alert('Failed to save product. Please try again.')
-  } finally {
-    setLoading(false)
+      toast.success(isEditing ? '✅ Product updated successfully!' : '✅ Product added successfully!', {
+        id: loadingToast,
+      })
+      
+      setTimeout(() => window.location.reload(), 800)
+      
+    } catch (error) {
+      console.error('Error saving product:', error)
+      toast.error('❌ Failed to save product. Please try again.', {
+        id: loadingToast,
+      })
+      setLoading(false)
+    }
   }
-}
 
-  // Handle delete
   const handleDelete = async (productId: string, productName: string) => {
-  if (!confirm(`Are you sure you want to delete "${productName}"? This action cannot be undone.`)) {
-    return
+    if (!confirm(`Are you sure you want to delete "${productName}"? This action cannot be undone.`)) {
+      return
+    }
+
+    setLoading(true)
+    const loadingToast = toast.loading('Deleting product...')
+
+    try {
+      const response = await fetch(`/api/products?id=${productId}`, {
+        method: 'DELETE'
+      })
+
+      if (!response.ok) throw new Error('Failed to delete product')
+
+      toast.success('✅ Product deleted successfully!', {
+        id: loadingToast,
+      })
+      
+      setTimeout(() => window.location.reload(), 800)
+      
+    } catch (error) {
+      console.error('Error deleting product:', error)
+      toast.error('❌ Failed to delete product. Please try again.', {
+        id: loadingToast,
+      })
+      setLoading(false)
+    }
   }
 
-  setLoading(true)
-
-  try {
-    const response = await fetch(`/api/products?id=${productId}`, {
-      method: 'DELETE'
-    })
-
-    if (!response.ok) throw new Error('Failed to delete product')
-
-    alert('Product deleted successfully!')
-    
-    // Reload the page to refresh all data including stats
-    window.location.reload()
-    
-  } catch (error) {
-    console.error('Error deleting product:', error)
-    alert('Failed to delete product. Please try again.')
-  } finally {
-    setLoading(false)
-  }
-}
-
-  // Open modal for editing
   const handleEdit = (product: Product) => {
     setEditingProduct(product)
     setIsModalOpen(true)
   }
 
-  // Open modal for adding
   const handleAdd = () => {
     setEditingProduct(null)
     setIsModalOpen(true)
@@ -114,7 +118,6 @@ export default function ProductsPageClient({ initialProducts, stats }: ProductsP
           <p className="mt-2 text-gray-600">Manage your product inventory and track performance.</p>
         </div>
         
-        {/* ADD PRODUCT BUTTON */}
         <button
           onClick={handleAdd}
           disabled={loading}
@@ -198,8 +201,6 @@ export default function ProductsPageClient({ initialProducts, stats }: ProductsP
                         <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">In Stock</span>
                       )}
                     </td>
-                    
-                    {/* ACTION BUTTONS */}
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button
@@ -228,7 +229,6 @@ export default function ProductsPageClient({ initialProducts, stats }: ProductsP
         </div>
       </div>
 
-      {/* PRODUCT MODAL */}
       <ProductModal
         isOpen={isModalOpen}
         onClose={() => {
