@@ -27,7 +27,7 @@ import {
   TrendingUp, 
   Users, 
   Coffee, 
-  ShoppingCart,  // ← ADD THIS LINE
+  ShoppingCart, 
   FileText,
   Menu,
   X,

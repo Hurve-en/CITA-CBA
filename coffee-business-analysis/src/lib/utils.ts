@@ -73,9 +73,9 @@ export function cn(...inputs: ClassValue[]) {
  */
 export function formatCurrency(
   amount: number,
-  currency: string = 'USD'
+  currency: string = 'PHP'  // ← Change default from 'USD' to 'PHP'
 ): string {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-PH', {  // ← Change locale to 'en-PH'
     style: 'currency',
     currency: currency,
     minimumFractionDigits: 2,
