@@ -1,9 +1,8 @@
 /**
- * CUSTOMERS BULK IMPORT API - FIXED
+ * CUSTOMERS BULK IMPORT API
  * 
- * POST /api/customers/import
- * 
- * Accepts CSV data and bulk creates customers WITH historical data
+ * Imports customers with ZERO stats
+ * Stats will be calculated when orders are imported!
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -40,28 +39,17 @@ export async function POST(request: NextRequest) {
           continue
         }
 
-        // Parse historical data from CSV (if provided)
-        const totalSpent = customer.totalSpent ? parseFloat(customer.totalSpent) : 0
-        const loyaltyPoints = customer.loyaltyPoints ? parseInt(customer.loyaltyPoints) : Math.floor(totalSpent)
-        const visitCount = customer.visitCount ? parseInt(customer.visitCount) : 0
-        
-        // Parse lastVisit date (if provided)
-        let lastVisit = null
-        if (customer.lastVisit && customer.lastVisit.toLowerCase() !== 'never') {
-          lastVisit = new Date(customer.lastVisit)
-        }
-
-        // Create customer with historical data
+        // Create customer with DEFAULT stats (will be updated by orders)
         await prisma.customer.create({
           data: {
             name: customer.name,
             email: customer.email,
             phone: customer.phone || null,
             address: customer.address || null,
-            totalSpent: totalSpent,
-            visitCount: visitCount,
-            loyaltyPoints: loyaltyPoints,
-            lastVisit: lastVisit
+            totalSpent: 0,        // Starts at 0
+            visitCount: 0,        // Starts at 0
+            loyaltyPoints: 0,     // Starts at 0
+            lastVisit: null       // No visits yet
           }
         })
 
