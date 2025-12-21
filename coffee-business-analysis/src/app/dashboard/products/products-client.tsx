@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { formatCurrency } from '@/lib/utils'
-import { Package, AlertTriangle, DollarSign, Coffee, ShoppingBag, Plus, Edit, Trash2, Download, Upload } from 'lucide-react'
+import { Package, AlertTriangle, DollarSign, Coffee, ShoppingBag, Plus, Edit, Trash2, Download, Upload, Trash } from 'lucide-react'
 import { ProductModal } from '@/components/modals/product-modal'
 import { ImportModal } from '@/components/modals/import-modal'
 import { convertToCSV, downloadCSV, validateProductCSV } from '@/lib/csv-utils'
@@ -102,6 +102,47 @@ export default function ProductsPageClient({ initialProducts, stats }: ProductsP
     }
   }
 
+  // CLEAR ALL PRODUCTS
+  const handleClearAll = async () => {
+    if (!confirm(`⚠️ WARNING: This will delete ALL ${products.length} products permanently! This action CANNOT be undone. Are you absolutely sure?`)) {
+      return
+    }
+
+    // Double confirmation
+    if (!confirm('This is your last chance! Type YES in your mind and click OK to proceed with deleting ALL products.')) {
+      return
+    }
+
+    setLoading(true)
+    const loadingToast = toast.loading('Clearing all products...')
+
+    try {
+      const response = await fetch('/api/products/clear', {
+        method: 'DELETE'
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to clear products')
+      }
+
+      toast.success(`✅ ${data.message}`, {
+        id: loadingToast,
+        duration: 3000
+      })
+      
+      setTimeout(() => window.location.reload(), 1000)
+      
+    } catch (error: any) {
+      console.error('Error clearing products:', error)
+      toast.error(`❌ ${error.message || 'Failed to clear products'}`, {
+        id: loadingToast,
+      })
+      setLoading(false)
+    }
+  }
+
   const handleEdit = (product: Product) => {
     setEditingProduct(product)
     setIsModalOpen(true)
@@ -158,6 +199,16 @@ export default function ProductsPageClient({ initialProducts, stats }: ProductsP
         
         {/* ACTION BUTTONS */}
         <div className="flex gap-3">
+          <button
+            onClick={handleClearAll}
+            disabled={loading || products.length === 0}
+            className="flex items-center gap-2 px-4 py-3 border-2 border-red-300 text-red-600 rounded-xl font-semibold hover:bg-red-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Delete all products"
+          >
+            <Trash className="w-5 h-5" />
+            Clear All
+          </button>
+
           <button
             onClick={handleExport}
             disabled={loading || products.length === 0}
