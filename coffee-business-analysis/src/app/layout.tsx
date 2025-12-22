@@ -2,12 +2,13 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
+import { Providers } from './providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "CITA - Coffee Business Analytics",
-  description: "Comprehensive analytics platform for coffee businesses built by CITA",
+  title: 'CITA - Coffee Business Analytics',
+  description: 'Comprehensive analytics platform for coffee businesses built by CITA',
   keywords: ['coffee', 'business', 'analytics', 'dashboard', 'CITA'],
 }
 
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
+        <Providers>
+          {children}
+        </Providers>
         {/* Toast Notifications */}
         <Toaster 
           position="top-right"
