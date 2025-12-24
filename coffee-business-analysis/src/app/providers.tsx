@@ -3,7 +3,7 @@
 /**
  * PROVIDERS WITH REACT QUERY
  * 
- * 
+ * Wraps app with NextAuth session provider and React Query provider
  */
 
 import { SessionProvider } from 'next-auth/react'
