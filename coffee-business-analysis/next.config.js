@@ -1,6 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  // Enable React strict mode for better development
+
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === 'development', // Disable in dev mode
+  buildExcludes: [/middleware-manifest\.json$/],
+})
+
+const nextConfig = withPWA({
+  // Enable React strict mode
   reactStrictMode: true,
 
   // Optimize images
@@ -13,7 +22,7 @@ const nextConfig = {
   // Compress output
   compress: true,
 
-  // Enable SWC minification (faster)
+  // Enable SWC minification
   swcMinify: true,
 
   // Performance optimizations
@@ -21,11 +30,11 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
-  // Experimental features for better performance
+  // Experimental features
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', 'recharts'],
   },
-}
+})
 
 module.exports = nextConfig
