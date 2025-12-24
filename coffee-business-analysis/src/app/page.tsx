@@ -215,7 +215,7 @@ export default function HomePage() {
       </footer>
 
       {/* <InstallPrompt /> */}
-     
+      <InstallPrompt />
 
     </main>
   )
