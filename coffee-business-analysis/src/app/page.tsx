@@ -1,6 +1,18 @@
 import Link from 'next/link'
 import { ArrowRight, BarChart3, Users, Coffee, TrendingUp, DollarSign, FileText } from 'lucide-react'
 import { InstallPrompt } from '@/components/install-prompt'
+import type { Metadata } from 'next'
+
+// SEO Metadata for Homepage
+export const metadata: Metadata = {
+  title: 'Home',
+  description: 'CITA - Comprehensive analytics and management platform for coffee businesses. Track sales, manage inventory, analyze customers, and grow your coffee shop.',
+  openGraph: {
+    title: 'CITA - Coffee Business Analytics Platform',
+    description: 'Transform your coffee business with data-driven insights',
+    images: ['/og-image.png'],
+  },
+}
 
 export default function HomePage() {
   return (
@@ -202,7 +214,7 @@ export default function HomePage() {
         </div>
       </footer>
 
-      {/* INSTALL BUTTON - Shows on homepage! */}
+      {/* INSTALL PROMPT */}
       <InstallPrompt />
 
     </main>
