@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, BarChart3, Users, Coffee, TrendingUp, DollarSign, FileText } from 'lucide-react'
+import { InstallPrompt } from '@/components/install-prompt'
 
 export default function HomePage() {
   return (
@@ -200,6 +201,9 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* INSTALL BUTTON - Shows on homepage! */}
+      <InstallPrompt />
 
     </main>
   )

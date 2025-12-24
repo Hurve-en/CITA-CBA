@@ -5,9 +5,21 @@
  * Shows when user is offline
  */
 
+'use client'
+
+/**
+ * OFFLINE PAGE - FIXED
+ * 
+ * src/app/offline/page.tsx
+ */
+
 import { WifiOff, RefreshCw } from 'lucide-react'
 
 export default function OfflinePage() {
+  const handleRefresh = () => {
+    window.location.reload()
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-6">
       <div className="max-w-md w-full bg-white rounded-2xl border border-gray-200 p-8 text-center shadow-lg">
@@ -25,7 +37,7 @@ export default function OfflinePage() {
         </p>
 
         <button
-          onClick={() => window.location.reload()}
+          onClick={handleRefresh}
           className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-slate-700 to-slate-900 text-white rounded-xl font-semibold hover:from-slate-800 hover:to-slate-950 transition-all shadow-md"
         >
           <RefreshCw className="w-5 h-5" />
