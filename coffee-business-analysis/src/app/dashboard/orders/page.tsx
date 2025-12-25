@@ -1,6 +1,6 @@
-export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/prisma'
 import OrdersPageClient from './orders-client'
+export const dynamic = 'force-dynamic'
 
 async function getOrdersData() {
   const [orders, customers, products] = await Promise.all([

@@ -1,9 +1,9 @@
-export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/prisma'
 import { formatCurrency, calculatePercentageChange } from '@/lib/utils'
 import { DollarSign, ShoppingBag, TrendingUp, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { PaymentChart } from '@/components/charts/payment-chart'
+export const dynamic = 'force-dynamic'
 
 async function getSalesData() {
   const now = new Date()
