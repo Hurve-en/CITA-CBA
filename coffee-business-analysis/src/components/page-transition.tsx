@@ -3,7 +3,6 @@
 /**
  * PAGE TRANSITION WRAPPER
  * 
- * Create: src/components/page-transition.tsx
  * Wraps pages with smooth fade-in animations
  */
 

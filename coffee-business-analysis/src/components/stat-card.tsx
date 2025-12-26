@@ -1,9 +1,7 @@
 'use client'
-
 /**
  * ENHANCED STAT CARD
  * 
- * Create: src/components/stat-card.tsx
  * Beautiful cards with hover effects and animations
  */
 
